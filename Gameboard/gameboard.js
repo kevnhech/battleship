@@ -1,6 +1,7 @@
 class Gameboard {
   constructor() {
     this.board = this.createBoard();
+    this.ships = [];
     this.missedAttacks = [];
   }
 
@@ -23,6 +24,8 @@ class Gameboard {
 
       this.board[placeX][placeY] = ship;
     }
+
+    this.ships.push(ship);
   }
 
   receiveAttack(coordinates) {
@@ -31,9 +34,13 @@ class Gameboard {
 
     if (ship != null) {
       ship.hit();
+    } else {
+      this.missedAttacks.push(coordinates);
     }
+  }
 
-    this.missedAttacks.push(coordinates);
+  allShipsSunk() {
+    return this.ships.every((ship) => ship.isSunk());
   }
 }
 

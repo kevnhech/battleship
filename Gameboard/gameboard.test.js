@@ -40,3 +40,16 @@ test('Miss a shot', () => {
   gb.receiveAttack([0, 3]);
   expect(gb.missedAttacks).toEqual([[0, 1], [0, 2], [0, 3]]);
 });
+
+test('Check if all ships have been sunk', () => {
+  let gb = new Gameboard();
+  let niceShip = new Ship(2);
+  let meanShip = new Ship(2);
+  gb.placeShip(niceShip, [0, 1]);
+  gb.placeShip(meanShip, [2, 1]);
+  gb.receiveAttack([0, 1]);
+  gb.receiveAttack([0, 1]);
+  gb.receiveAttack([2, 1]);
+  gb.receiveAttack([2, 1]);
+  expect(gb.allShipsSunk()).toBe(true);
+});
