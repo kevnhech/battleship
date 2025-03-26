@@ -23,3 +23,20 @@ test('Place ships on board vertically', () => {
   expect(gb.board[1][9]).toBe(ship);
   expect(gb.board[2][9]).toBe(ship);
 });
+
+test('Hit a ship', () => {
+  let gb = new Gameboard();
+  let ship = new Ship(2);
+  gb.placeShip(ship, [0, 1]);
+  gb.receiveAttack([0, 1]);
+  expect(gb.board[0][1].hitCount).toBe(1);
+});
+
+test('Miss a shot', () => {
+  let gb = new Gameboard();
+  let ship = new Ship(2);
+  gb.receiveAttack([0, 1]);
+  gb.receiveAttack([0, 2]);
+  gb.receiveAttack([0, 3]);
+  expect(gb.missedAttacks).toEqual([[0, 1], [0, 2], [0, 3]]);
+});
