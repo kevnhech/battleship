@@ -53,3 +53,18 @@ test('Check if all ships have been sunk', () => {
   gb.receiveAttack([2, 1]);
   expect(gb.allShipsSunk()).toBe(true);
 });
+
+test('Ship misplacement', () => {
+  let gb = new Gameboard();
+  let coolShip = new Ship(4);
+  let lameShip = new Ship(2);
+  gb.placeShip(coolShip, [0, 0], "vertical");
+
+  expect(() => {
+    gb.placeShip(lameShip, [3, 0], "vertical");
+  }).toThrow("There's already a ship here.");
+
+  expect(() => {
+    gb.placeShip(lameShip, [0, 10]);
+  }).toThrow("Out of bounds.");
+});

@@ -12,6 +12,14 @@ class Gameboard {
   placeShip(ship, coordinates, orientation = "horizontal") {
     const [x, y] = coordinates;
     
+    if (this.board[x][y] != null) {
+      throw new Error("There's already a ship here.");
+    }
+
+    if (x >= 10 || y >= 10) {
+      throw new Error("Out of bounds.");
+    }
+    
     for (let i = 0; i < ship.length; i++) {
       let placeX = x;
       let placeY = y;
