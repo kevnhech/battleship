@@ -1,6 +1,6 @@
-const Ship = require('./ship');
+const Ship = require("./ship");
 
-test('Your ships will be objects that include their length, times hit, and sunk', () => {
+test("Your ships will be objects that include their length, times hit, and sunk", () => {
   let p = new Ship(4);
   p.hit();
   p.hit();
