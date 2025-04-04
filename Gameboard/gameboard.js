@@ -16,6 +16,10 @@ class Gameboard {
       throw new Error("There's already a ship here.");
     }
 
+    if ((ship.length + x > 10 && orientation == "vertical") || (ship.length + y > 10 && orientation == "horizontal")) {
+      throw new Error("Ship does not fit here.");
+    }
+
     if (x >= 10 || y >= 10) {
       throw new Error("Out of bounds.");
     }
@@ -52,4 +56,5 @@ class Gameboard {
   }
 }
 
-module.exports = Gameboard;
+// module.exports = Gameboard;
+export default Gameboard;
