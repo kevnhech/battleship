@@ -19,4 +19,5 @@ class Ship {
   }
 }
 
-module.exports = Ship;
+// module.exports = Ship;
+export default Ship;
