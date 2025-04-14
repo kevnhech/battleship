@@ -1,0 +1,58 @@
+.body {
+  display: flex;
+}
+
+#player-grid {
+  padding: 24px;
+}
+
+#opponent-grid {
+  padding: 24px;
+}
+
+.battlefield-table {
+  border-collapse: collapse;
+}
+
+.battlefield-cell {
+  border: 1px solid #000;
+  padding: 0;
+}
+
+.battlefield-cell__busy {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.battlefield-cell-content {
+  position: relative;
+  height: 2em;
+  width: 2em;
+}
+
+.marker {
+  position: absolute;
+  font-size: 11px;
+}
+
+.marker__col {
+  top: -2em;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.marker__row {
+  left: -3em;
+  width: 2em;
+  text-align: right;
+  top: 1em;
+  height: 1em;
+}
+
+.ship-box {
+  border: 1px solid blue;
+  width: 2em;
+  height: 2em;
+  margin: -2px;
+  background: blue;
+}
