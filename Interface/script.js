@@ -17,9 +17,6 @@ playerTwo.placeShip(new Ship(3), [6, 6]);
 playerTwo.placeShip(new Ship(3), [0, 6]);
 playerTwo.placeShip(new Ship(2), [8, 3]);
 
-console.log(playerOne);
-console.log(playerTwo);
-
 const playerGrid = document.getElementById("player-grid");
 const oppGrid = document.getElementById("opponent-grid");
 
