@@ -2,8 +2,9 @@ import Ship from "../Ship/ship.js";
 import Gameboard from "../Gameboard/gameboard.js";
 import Player from "../Player/player.js";
 
+// RENDER BOARDS
 let playerOne = new Player("Kevin");
-let playerTwo = new Player("CPU");
+let playerTwo = new Player("Opponent");
 
 playerOne.placeShip(new Ship(5), [0, 0]);
 playerOne.placeShip(new Ship(4), [1, 5], "vertical");
@@ -58,7 +59,7 @@ function renderBoard(grid, player) {
         content.appendChild(markerRow);
       }
 
-      if (player.gameboard.board[x][y] != null) {
+      if (player.gameboard.board[x][y] != null && player.name != "Opponent") {
         tableData.classList.add("battlefield-cell__busy");
         let shipBox = document.createElement("div");
         shipBox.setAttribute("class", "ship-box");
@@ -75,7 +76,38 @@ function renderBoard(grid, player) {
 
   battlefieldTable.appendChild(tableBody);
   grid.appendChild(battlefieldTable);
+  let battlefieldLabel = document.createElement("div");
+  battlefieldLabel.setAttribute("class", "battlefield-label");
+  battlefieldLabel.textContent = `${player.name}'s grid`;
+  grid.appendChild(battlefieldLabel);
 }
 
 renderBoard(playerGrid, playerOne);
 renderBoard(oppGrid, playerTwo);
+
+// EVENT LISTENERS
+for (let x = 0; x < 10; x++) {
+  let row = oppGrid.querySelectorAll(".battlefield-row")[x];
+  for (let y = 0; y < 10; y++) {
+    let cell = row.querySelectorAll(".battlefield-cell")[y];
+    let cellContent = cell.querySelector(".battlefield-cell-content");
+    let span = document.createElement("span");
+    span.setAttribute("class", "z");
+    let oppBoard = playerTwo.gameboard;
+    let oppShip = playerTwo.gameboard.board[x][y];
+    cell.addEventListener("click", () => {
+      oppBoard.receiveAttack([x, y]);
+      if (oppShip == null) {
+        cell.classList.remove("battlefield-cell__empty");
+        cell.classList.add("battlefield-cell__miss");
+      } else {
+        cell.classList.remove("battlefield-cell__empty");
+        cell.classList.add("battlefield-cell__hit");
+        oppShip.isSunk();
+      }
+      cellContent.appendChild(span);
+      console.log(oppBoard);
+      console.log(oppShip);
+    }, { once: true });
+  }
+}
