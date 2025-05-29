@@ -108,6 +108,44 @@ for (let x = 0; x < 10; x++) {
       cellContent.appendChild(span);
       console.log(oppBoard);
       console.log(oppShip);
+      if (playerTwo.gameboard.allShipsSunk()) console.log(`${playerOne.name} wins!`);
     }, { once: true });
   }
 }
+
+// COMPUTER RANDOM PLAYS
+function computerTurn() {
+  let playerBoard = playerOne.gameboard;
+  let randomCoordinate = null;
+  let moves = playerOne.gameboard.hitAttacks.concat(playerBoard.missedAttacks);
+
+  do {
+    randomCoordinate = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+  } while (moves.some((arr) => JSON.stringify(arr) == JSON.stringify(randomCoordinate)));
+
+  playerBoard.receiveAttack(randomCoordinate);
+  let [x, y] = randomCoordinate;
+  console.log(randomCoordinate);
+  // render the user gameboard after hit
+  // maybe change the styling of the cells here
+  let row = playerGrid.querySelectorAll(".battlefield-row")[x];
+  let cell = row.querySelectorAll(".battlefield-cell")[y];
+  let cellContent = cell.querySelector(".battlefield-cell-content");
+  let span = document.createElement("span");
+  span.setAttribute("class", "z");
+
+  let playerShip = playerBoard.board[x][y];
+  if (playerShip == null) {
+    cell.classList.remove("battlefield-cell__empty");
+    cell.classList.add("battlefield-cell__miss");
+  } else {
+    cell.classList.remove("battlefield-cell__busy");
+    cell.classList.add("battlefield-cell__hit");
+    playerShip.isSunk();
+  }
+  cellContent.appendChild(span);
+  console.log(playerBoard);
+  console.log(playerShip);
+
+}
+computerTurn();
