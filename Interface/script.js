@@ -86,32 +86,43 @@ renderBoard(playerGrid, playerOne);
 renderBoard(oppGrid, playerTwo);
 
 // EVENT LISTENERS
-for (let x = 0; x < 10; x++) {
-  let row = oppGrid.querySelectorAll(".battlefield-row")[x];
-  for (let y = 0; y < 10; y++) {
-    let cell = row.querySelectorAll(".battlefield-cell")[y];
-    let cellContent = cell.querySelector(".battlefield-cell-content");
-    let span = document.createElement("span");
-    span.setAttribute("class", "z");
-    let oppBoard = playerTwo.gameboard;
-    let oppShip = playerTwo.gameboard.board[x][y];
-    cell.addEventListener("click", () => {
-      oppBoard.receiveAttack([x, y]);
-      if (oppShip == null) {
-        cell.classList.remove("battlefield-cell__empty");
-        cell.classList.add("battlefield-cell__miss");
-      } else {
-        cell.classList.remove("battlefield-cell__empty");
-        cell.classList.add("battlefield-cell__hit");
-        oppShip.isSunk();
-      }
-      cellContent.appendChild(span);
-      console.log(oppBoard);
-      console.log(oppShip);
-      if (playerTwo.gameboard.allShipsSunk()) console.log(`${playerOne.name} wins!`);
-    }, { once: true });
+function touchBoard() {
+  for (let x = 0; x < 10; x++) {
+    let row = oppGrid.querySelectorAll(".battlefield-row")[x];
+    for (let y = 0; y < 10; y++) {
+      let cell = row.querySelectorAll(".battlefield-cell")[y];
+      let cellContent = cell.querySelector(".battlefield-cell-content");
+      let span = document.createElement("span");
+      span.setAttribute("class", "z");
+      let oppBoard = playerTwo.gameboard;
+      let oppShip = playerTwo.gameboard.board[x][y];
+      cell.addEventListener("click", () => {
+        oppBoard.receiveAttack([x, y]);
+        if (oppShip == null) {
+          cell.classList.remove("battlefield-cell__empty");
+          cell.classList.add("battlefield-cell__miss");
+        } else {
+          cell.classList.remove("battlefield-cell__empty");
+          cell.classList.add("battlefield-cell__hit");
+          oppShip.isSunk();
+        }
+        cellContent.appendChild(span);
+        console.log(oppBoard);
+        console.log(oppShip);
+
+        if (playerTwo.gameboard.allShipsSunk()) {
+          console.log(`${playerOne.name} wins!`);
+          oppGrid.querySelectorAll(".battlefield-cell__empty").forEach((cell) => cell.classList.remove("battlefield-cell__empty"));
+          let newOppGrid = oppGrid.cloneNode(true);
+          oppGrid.parentNode.replaceChild(newOppGrid, oppGrid);
+        } else {
+          computerTurn();
+        }
+      }, { once: true });
+    }
   }
 }
+touchBoard();
 
 // COMPUTER RANDOM PLAYS
 function computerTurn() {
@@ -144,8 +155,10 @@ function computerTurn() {
     playerShip.isSunk();
   }
   cellContent.appendChild(span);
-  console.log(playerBoard);
-  console.log(playerShip);
-
+  if (playerOne.gameboard.allShipsSunk()) {
+    console.log(`${playerTwo.name} wins!`);
+    oppGrid.querySelectorAll(".battlefield-cell__empty").forEach((cell) => cell.classList.remove("battlefield-cell__empty"));
+    let newOppGrid = oppGrid.cloneNode(true);
+    oppGrid.parentNode.replaceChild(newOppGrid, oppGrid);
+  }
 }
-computerTurn();
