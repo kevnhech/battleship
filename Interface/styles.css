@@ -124,3 +124,14 @@
   margin: -2px;
   background: blue;
 }
+
+.two-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+.btn-primary {
+  width: fit-content;
+}
