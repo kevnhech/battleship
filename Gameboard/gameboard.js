@@ -12,9 +12,12 @@ class Gameboard {
 
   placeShip(ship, coordinates, orientation = "horizontal") {
     const [x, y] = coordinates;
-    
-    if (this.board[x][y] != null) {
-      throw new Error("There's already a ship here.");
+
+    for (let i = 0; i < ship.length; i++) {
+      if ((orientation == "vertical" && this.board[x + i][y] != undefined) ||
+          (orientation == "horizontal" && this.board[x][y + i] != undefined)) {
+        throw new Error("There's already a ship here.")
+      }
     }
 
     if ((ship.length + x > 10 && orientation == "vertical") || (ship.length + y > 10 && orientation == "horizontal")) {
