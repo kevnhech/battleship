@@ -3,20 +3,54 @@ import Gameboard from "../Gameboard/gameboard.js";
 import Player from "../Player/player.js";
 
 // RENDER BOARDS
-let playerOne = new Player("Kevin");
-let playerTwo = new Player("Opponent");
+const playerOne = new Player("Player");
+const playerTwo = new Player("Opponent");
 
-playerOne.placeShip(new Ship(5), [0, 0]);
-playerOne.placeShip(new Ship(4), [1, 5], "vertical");
-playerOne.placeShip(new Ship(3), [6, 0]);
-playerOne.placeShip(new Ship(3), [8, 5]);
-playerOne.placeShip(new Ship(2), [8, 2], "vertical");
+function randomPlacements() {
+  let success = true;
 
-playerTwo.placeShip(new Ship(5), [1, 7], "vertical");
-playerTwo.placeShip(new Ship(4), [2, 1]);
-playerTwo.placeShip(new Ship(3), [6, 6]);
-playerTwo.placeShip(new Ship(3), [0, 6]);
-playerTwo.placeShip(new Ship(2), [8, 3]);
+  for (let i = 1; i < 6; i++) {
+    success = true
+    do {
+      let directions = ["vertical", "horizontal"];
+      let binary = Math.floor(Math.random() * 2);
+      let randomCoordinate = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+      let [x, y] = randomCoordinate;
+      let randomDirections = directions[binary];
+      try {
+        if (i == 1) {
+          playerOne.placeShip(new Ship(i + 1), randomCoordinate, randomDirections);
+          success = false;
+        } else {
+          playerOne.placeShip(new Ship(i), randomCoordinate, randomDirections);
+          success = false;
+        }
+      } catch (error) {}
+    } while (success);
+  }
+
+  for (let i = 1; i < 6; i++) {
+    success = true
+    do {
+      let directions = ["vertical", "horizontal"];
+      let binary = Math.floor(Math.random() * 2);
+      let randomCoordinate = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+      let [x, y] = randomCoordinate;
+      let randomDirections = directions[binary];
+      try {
+        if (i == 1) {
+          playerTwo.placeShip(new Ship(i + 1), randomCoordinate, randomDirections);
+          success = false;
+        } else {
+          playerTwo.placeShip(new Ship(i), randomCoordinate, randomDirections);
+          success = false;
+        }
+      } catch (error) {}
+    } while (success);
+  }
+}
+
+randomPlacements();
 
 const playerGrid = document.getElementById("player-grid");
 const oppGrid = document.getElementById("opponent-grid");
@@ -107,11 +141,9 @@ function touchBoard() {
           oppShip.isSunk();
         }
         cellContent.appendChild(span);
-        console.log(oppBoard);
-        console.log(oppShip);
 
         if (playerTwo.gameboard.allShipsSunk()) {
-          console.log(`${playerOne.name} wins!`);
+          alert("You win!");
           oppGrid.querySelectorAll(".battlefield-cell__empty").forEach((cell) => cell.classList.remove("battlefield-cell__empty"));
           let newOppGrid = oppGrid.cloneNode(true);
           oppGrid.parentNode.replaceChild(newOppGrid, oppGrid);
@@ -136,9 +168,6 @@ function computerTurn() {
 
   playerBoard.receiveAttack(randomCoordinate);
   let [x, y] = randomCoordinate;
-  console.log(randomCoordinate);
-  // render the user gameboard after hit
-  // maybe change the styling of the cells here
   let row = playerGrid.querySelectorAll(".battlefield-row")[x];
   let cell = row.querySelectorAll(".battlefield-cell")[y];
   let cellContent = cell.querySelector(".battlefield-cell-content");
@@ -156,9 +185,14 @@ function computerTurn() {
   }
   cellContent.appendChild(span);
   if (playerOne.gameboard.allShipsSunk()) {
-    console.log(`${playerTwo.name} wins!`);
+    alert("You lose!");
     oppGrid.querySelectorAll(".battlefield-cell__empty").forEach((cell) => cell.classList.remove("battlefield-cell__empty"));
     let newOppGrid = oppGrid.cloneNode(true);
     oppGrid.parentNode.replaceChild(newOppGrid, oppGrid);
   }
 }
+
+const randomButton = document.querySelector(".btn-primary");
+randomButton.addEventListener("click", () => {
+  window.location.reload();
+});
