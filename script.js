@@ -1,6 +1,5 @@
 import Ship from "../Ship/ship.js";
-import Gameboard from "../Gameboard/gameboard.js";
-import Player from "../Player/player.js";
+import Player from "/Player/player.js";
 
 // RENDER BOARDS
 const playerOne = new Player("Player");
